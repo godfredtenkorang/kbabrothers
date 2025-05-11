@@ -1,0 +1,82 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main">
+
+<!-- Driver Table -->
+<div class="driver-table-container">
+    <h2>Driver List</h2>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>License Number</th>
+            <th>Assigned Car</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="driverTableBody">
+          <!-- Example Driver -->
+          <tr>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>(555) 123-4567</td>
+            <td>AB1234567</td>
+            <td>BenCars</td>
+            <td>
+              <button class="edit-btn">Edit</button>
+              <button class="delete-btn">Delete</button>
+            </td>
+          </tr>
+          <!-- More rows will be dynamically added -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Add Driver Button -->
+    <button id="addDriverBtn">Add New Driver</button>
+  </div>
+  
+  <!-- Add New Driver Modal (Pop-up) -->
+  <div class="modal" id="addDriverModal">
+    <div class="modal-content">
+      <h3>Add New Driver</h3>
+      <form id="addDriverForm">
+        <input type="text" id="driver-name" placeholder="Full Name" required />
+        <input type="email" id="driver-email" placeholder="Email Address" required />
+        <input type="text" id="driver-phone" placeholder="Phone Number" required />
+        <input type="text" id="driver-license" placeholder="License Number" required />
+        <button type="submit">Add Driver</button>
+        <button type="button" onclick="closeAddDriverModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+  
+   
+
+
+</div>
+
+<script>
+
+    // Open the modal when "Add New Driver" button is clicked
+document.getElementById('addDriverBtn').addEventListener('click', function() {
+  document.getElementById('addDriverModal').classList.add('show');
+});
+
+// Close the modal when "Cancel" button is clicked
+function closeAddDriverModal() {
+  document.getElementById('addDriverModal').classList.remove('show');
+}
+
+</script>
+
+
+
+
+{% endblock %}
