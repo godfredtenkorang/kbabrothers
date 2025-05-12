@@ -13,3 +13,6 @@ def view_Vehicles(request):
 
 def drivers(request):
     return render(request, 'mysite/drivers.html')
+
+def expenses(request):
+    return render(request, 'mysite/expenses.html')

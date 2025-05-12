@@ -1,0 +1,163 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main">
+
+    <div class="expen">
+        <div class="title">
+            <h2>Driver Expenses</h2>
+        </div>
+
+        <div class="filter-controls">
+            <input type="number" id="filterYear" placeholder="Enter Year (e.g., 2024)" min="2000" max="2100" />
+
+            <select id="filterMonth">
+                <option value="" disabled selected>Filter by Month</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Loading message and spinner -->
+    <div id="loadingMessage" style="display: none; margin-top: 10px;">
+        <span>We are fetching all expenses for <span id="loadingPeriod"></span> for you...</span>
+        <div class="spinner"></div>
+    </div>
+
+    <div class="expense-table-container">
+
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                        <th>Driver</th>
+                        <th>Vehicle</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTableBody">
+                    <!-- Example row -->
+                    <tr>
+                        <td>10</td>
+                        <td>May</td>
+                        <td>2024</td>
+                        <td>John Doe</td>
+                        <td>ABC-123</td>
+                        <td>Fuel</td>
+                        <td>$45.00</td>
+                        <td>Filled full tank</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="overlay">
+        <div id="noResultMessage">
+            <strong>No results found for the selected period.</strong><br />
+            <button onclick="refreshPage()">Refresh Page</button>
+        </div>
+    </div>
+</div>
+<script>
+    // Add debounce function to limit how often filterExpenses runs
+    function debounce(func, wait) {
+        let timeout;
+        return function () {
+            const context = this, args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                func.apply(context, args);
+            }, wait);
+        };
+    }
+
+    function filterExpenses() {
+        const year = document.getElementById('filterYear').value.trim();
+        const month = document.getElementById('filterMonth').value;
+        const rows = document.querySelectorAll('#expenseTableBody tr');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const loadingPeriod = document.getElementById('loadingPeriod');
+        const expenseTable = document.querySelector('.expense-table-container');
+        const noResultMessage = document.getElementById('noResultMessage');
+        const overlay = document.getElementById('overlay');
+
+        // Format display period
+        const monthName = month ? new Date(0, parseInt(month, 10) - 1).toLocaleString('default', { month: 'long' }) : '';
+        loadingPeriod.textContent = `${monthName} ${year}`.trim();
+
+        // Hide table and show loading
+        expenseTable.style.display = 'none';
+        loadingMessage.style.display = 'block';
+        noResultMessage.style.display = 'none';
+        overlay.style.display = 'none';
+
+        setTimeout(() => {
+            let hasMatches = false;
+
+            rows.forEach(row => {
+                const rowMonthText = row.cells[1].textContent.trim();
+                const rowYear = row.cells[2].textContent.trim();
+                const rowMonth = new Date(`${rowMonthText} 1, 2000`).getMonth() + 1;
+                const formattedRowMonth = rowMonth.toString().padStart(2, '0');
+
+                const matchYear = !year || rowYear === year;
+                const matchMonth = !month || formattedRowMonth === month;
+                const shouldShow = matchYear && matchMonth;
+
+                row.style.display = shouldShow ? '' : 'none';
+
+                if (shouldShow) {
+                    hasMatches = true;
+                }
+            });
+
+            loadingMessage.style.display = 'none';
+
+            if (hasMatches) {
+                expenseTable.style.display = 'block';
+            } else {
+                let message = 'No results found for the selected period.';
+                if (year && month) {
+                    message = `No data found for ${monthName} ${year}.`;
+                } else if (year) {
+                    message = `No data available for the year ${year}.`;
+                }
+
+                noResultMessage.querySelector('strong').textContent = message;
+                noResultMessage.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+        }, 500);
+    }
+
+    function refreshPage() {
+        location.reload();
+    }
+
+    // Apply debounce to the input event (300ms delay after typing stops)
+    const debouncedFilter = debounce(filterExpenses, 500);
+
+    // Month changes should still trigger immediately
+    document.getElementById('filterYear').addEventListener('input', debouncedFilter);
+    document.getElementById('filterMonth').addEventListener('change', filterExpenses);
+</script>
+{% endblock %}
