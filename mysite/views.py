@@ -16,3 +16,12 @@ def drivers(request):
 
 def expenses(request):
     return render(request, 'mysite/expenses.html')
+
+def waybills(request):
+    return render(request, 'mysite/waybills.html')
+
+def createwayBills(request):
+    return render(request, 'mysite/createwayBills.html')
+
+def addExpenses(request):
+    return render(request, 'mysite/addExpenses.html')

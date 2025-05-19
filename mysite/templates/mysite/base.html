@@ -25,7 +25,9 @@
         <div class="message">
             <h1>Admin Dashboard</h1>
         </div>
-    
+        <button id="fullscreen-btn" class="fullscreen-btn">
+            <span class="fullscreen-icon">⛶</span> Fullscreen
+          </button>
        
     </header>
     
@@ -73,7 +75,7 @@
                     </a>
     
                     <!-- team button -->
-                    <a href="">
+                    <a href="{% url 'waybills' %}">
                         <div class="nav-option option1 button">
                             <h3>Waybills<i class="fa-solid fa-people-group"></i> </h3>
                         </div>
@@ -125,6 +127,99 @@
     
     </script>
   <script src="{% static 'mysite/app.js' %}"></script>
+  
+ <script>
 
+// Persistent Fullscreen Controller
+document.addEventListener('DOMContentLoaded', function() {
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    
+    // Immediately attempt fullscreen if it was enabled before
+    if (localStorage.getItem('kbaFullscreen') === 'true') {
+        document.documentElement.requestFullscreen()
+            .catch(err => {
+                console.log('Fullscreen request error:', err);
+                // If fullscreen fails, ensure button state matches
+                localStorage.setItem('kbaFullscreen', 'false');
+            });
+    }
+
+    // Update button text based on current state
+    function updateButton() {
+        const isFullscreen = document.fullscreenElement !== null;
+        fullscreenBtn.innerHTML = isFullscreen ? 
+            '<span class="fullscreen-icon">⛶</span> Exit Fullscreen' : 
+            '<span class="fullscreen-icon">⛶</span> Fullscreen';
+    }
+
+    // Toggle fullscreen mode
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen()
+                .then(() => {
+                    localStorage.setItem('kbaFullscreen', 'true');
+                    updateButton();
+                })
+                .catch(err => {
+                    console.log('Fullscreen error:', err);
+                    localStorage.setItem('kbaFullscreen', 'false');
+                    updateButton();
+                });
+        } else {
+            document.exitFullscreen()
+                .then(() => {
+                    localStorage.setItem('kbaFullscreen', 'false');
+                    updateButton();
+                });
+        }
+    }
+
+    // Handle fullscreen change events
+    function handleFullscreenChange() {
+        updateButton();
+        // If user exits fullscreen via browser controls, update our state
+        if (!document.fullscreenElement) {
+            localStorage.setItem('kbaFullscreen', 'false');
+        }
+    }
+
+    // Set up event listeners
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    // Initial button update
+    updateButton();
+
+    // Special handling for page transitions
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && localStorage.getItem('kbaFullscreen') === 'true') {
+            // If page becomes visible and we should be in fullscreen
+            setTimeout(() => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen()
+                        .catch(err => console.log('Fullscreen restore error:', err));
+                }
+            }, 100);
+        }
+    });
+
+    // Ensure fullscreen is attempted before unload (for page transitions)
+    window.addEventListener('beforeunload', function() {
+        if (localStorage.getItem('kbaFullscreen') === 'true' && !document.fullscreenElement) {
+            document.documentElement.requestFullscreen()
+                .catch(err => console.log('Pre-navigation fullscreen error:', err));
+        }
+    });
+});
+
+
+
+
+
+ </script>
+  
 </body>
 </html>
