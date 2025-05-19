@@ -1,0 +1,292 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main">
+
+    <div class="add-waybill-container">
+       <div class="expen">
+        <a  href="{% url 'createwayBills' %}"><button class="addBtn" >Creat Waybill</button></a>
+       </div>
+       
+    </div>
+    <div class="waybill-management">
+      <!-- Loading Overlay (Hidden by default) -->
+      <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Filtering waybills...</p>
+      </div>
+    
+      <!-- Waybill Detail Modal (Hidden by default) -->
+      <div class="modal-overlay" id="waybill-modal">
+        <div class="modal-content">
+          <button class="close-modal">&times;</button>
+          <h3>Waybill Details</h3>
+          <div class="waybill-receipt" id="waybill-details">
+            <!-- Receipt content will be inserted here -->
+          </div>
+          <button class="print-btn">Print Receipt</button>
+        </div>
+      </div>
+    
+      <!-- Filter Section -->
+      <div class="waybill-filters">
+        <h3>Filter Waybills</h3>
+        <div class="filter-container">
+          <div class="filter-group">
+            <label for="filter-date">Date Range</label>
+            <div class="date-range-inputs">
+              <input type="date" id="start-date" class="filter-input">
+              <span class="date-separator">to</span>
+              <input type="date" id="end-date" class="filter-input">
+            </div>
+          </div>
+    
+          <div class="filter-group">
+            <label for="filter-driver">Driver</label>
+            <select id="filter-driver" class="filter-input">
+              <option value="">All Drivers</option>
+              <option value="John Doe">John Doe</option>
+              <option value="Jane Smith">Jane Smith</option>
+            </select>
+          </div>
+    
+          <div class="filter-group">
+            <label for="filter-client">Client</label>
+            <input type="text" id="filter-client" class="filter-input" placeholder="Search clients...">
+          </div>
+    
+          <div class="filter-actions">
+            <button class="filter-btn apply-btn" id="apply-filters">Apply Filters</button>
+            <button class="filter-btn reset-btn">Reset</button>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Table Section - Hardcoded in HTML -->
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Waybill #</th>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Driver</th>
+              <th>Vehicle</th>
+              <th>Destination</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="waybill-data">
+            <!-- Waybill data hardcoded in HTML -->
+            <tr data-waybill='{"number":"WB-2023-001","date":"2023-05-15","client":"ABC Traders","driver":"John Doe","vehicle":"ABC-123","destination":"Lagos","goods":"Construction materials"}'>
+              <td>WB-2023-001</td>
+              <td>15-May-2023</td>
+              <td>ABC Traders</td>
+              <td>John Doe</td>
+              <td>ABC-123</td>
+              <td>Lagos</td>
+              <td>
+                <button class="action-btn view-btn">View</button>
+              </td>
+            </tr>
+            <tr data-waybill='{"number":"WB-2023-002","date":"2023-05-17","client":"XYZ Enterprises","driver":"Jane Smith","vehicle":"XYZ-789","destination":"Abuja","goods":"Electronics"}'>
+              <td>WB-2023-002</td>
+              <td>17-May-2023</td>
+              <td>XYZ Enterprises</td>
+              <td>Jane Smith</td>
+              <td>XYZ-789</td>
+              <td>Abuja</td>
+              <td>
+                <button class="action-btn view-btn">View</button>
+              </td>
+            </tr>
+            <tr data-waybill='{"number":"WB-2023-003","date":"2023-05-20","client":"Global Foods","driver":"John Doe","vehicle":"ABC-123","destination":"Port Harcourt","goods":"Food supplies"}'>
+              <td>WB-2023-003</td>
+              <td>20-May-2023</td>
+              <td>Global Foods</td>
+              <td>John Doe</td>
+              <td>ABC-123</td>
+              <td>Port Harcourt</td>
+              <td>
+                <button class="action-btn view-btn">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Waybill Receipt Template (Hidden) -->
+    <template id="receipt-template">
+      <div class="receipt-header">
+        <h2>KBA Brothers Limited</h2>
+        <p>Waybill Receipt</p>
+      </div>
+      <div class="receipt-body">
+        <div class="receipt-row">
+          <span class="label">Waybill Number:</span>
+          <span class="value" id="receipt-number">WB-2023-001</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Date:</span>
+          <span class="value" id="receipt-date">15-May-2023</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Client:</span>
+          <span class="value" id="receipt-client">ABC Traders</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Driver:</span>
+          <span class="value" id="receipt-driver">John Doe</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Vehicle:</span>
+          <span class="value" id="receipt-vehicle">ABC-123</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Destination:</span>
+          <span class="value" id="receipt-destination">Lagos</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Goods Description:</span>
+          <span class="value" id="receipt-goods">Construction materials</span>
+        </div>
+      </div>
+      <div class="receipt-footer">
+        <p>Thank you for choosing KBA Brothers</p>
+      </div>
+    </template>
+    
+    
+
+<!-- Add this button where you want the fullscreen control to appear -->
+
+
+<style>
+ 
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+      // DOM Elements
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const waybillModal = document.getElementById('waybill-modal');
+      const waybillDetails = document.getElementById('waybill-details');
+      const receiptTemplate = document.getElementById('receipt-template');
+      const applyFiltersBtn = document.getElementById('apply-filters');
+      const resetBtn = document.querySelector('.reset-btn');
+      const closeModalBtn = document.querySelector('.close-modal');
+    
+      // Show waybill details in modal
+      function showWaybillDetails(event) {
+        const waybillData = JSON.parse(event.target.closest('tr').dataset.waybill);
+        
+        // Clone the receipt template
+        const receipt = receiptTemplate.content.cloneNode(true);
+        
+        // Fill in the data
+        receipt.getElementById('receipt-number').textContent = waybillData.number;
+        receipt.getElementById('receipt-date').textContent = formatDate(waybillData.date);
+        receipt.getElementById('receipt-client').textContent = waybillData.client;
+        receipt.getElementById('receipt-driver').textContent = waybillData.driver;
+        receipt.getElementById('receipt-vehicle').textContent = waybillData.vehicle;
+        receipt.getElementById('receipt-destination').textContent = waybillData.destination;
+        receipt.getElementById('receipt-goods').textContent = waybillData.goods;
+        
+        // Clear previous content and add new receipt
+        waybillDetails.innerHTML = '';
+        waybillDetails.appendChild(receipt);
+        
+        // Show the modal
+        waybillModal.style.display = 'flex';
+      }
+    
+      // Format date as DD-MMM-YYYY
+      function formatDate(dateString) {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      }
+    
+      // Filter function with loading animation
+      function filterWaybills() {
+        // Show loading overlay
+        loadingOverlay.style.display = 'flex';
+        
+        // Simulate API call with setTimeout
+        setTimeout(() => {
+          const startDate = document.getElementById('start-date').value;
+          const endDate = document.getElementById('end-date').value;
+          const driver = document.getElementById('filter-driver').value;
+          const client = document.getElementById('filter-client').value.toLowerCase();
+    
+          const rows = document.querySelectorAll('#waybill-data tr');
+          
+          rows.forEach(row => {
+            const waybillData = JSON.parse(row.dataset.waybill);
+            let shouldShow = true;
+            
+            // Date filter
+            if (startDate && waybillData.date < startDate) shouldShow = false;
+            if (endDate && waybillData.date > endDate) shouldShow = false;
+            
+            // Driver filter
+            if (driver && waybillData.driver !== driver) shouldShow = false;
+            
+            // Client filter
+            if (client && !waybillData.client.toLowerCase().includes(client)) shouldShow = false;
+            
+            row.style.display = shouldShow ? '' : 'none';
+          });
+          
+          // Hide loading overlay
+          loadingOverlay.style.display = 'none';
+        }, 2000); // 2 second delay to simulate loading
+      }
+    
+      // Reset filters
+      function resetFilters() {
+        document.getElementById('start-date').value = '';
+        document.getElementById('end-date').value = '';
+        document.getElementById('filter-driver').value = '';
+        document.getElementById('filter-client').value = '';
+        
+        const rows = document.querySelectorAll('#waybill-data tr');
+        rows.forEach(row => {
+          row.style.display = '';
+        });
+      }
+    
+      // Event listeners
+      applyFiltersBtn.addEventListener('click', filterWaybills);
+      resetBtn.addEventListener('click', resetFilters);
+      closeModalBtn.addEventListener('click', () => {
+        waybillModal.style.display = 'none';
+      });
+    
+      // Add click event to all view buttons
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', showWaybillDetails);
+      });
+    
+      // Close modal when clicking outside
+      waybillModal.addEventListener('click', (e) => {
+        if (e.target === waybillModal) {
+          waybillModal.style.display = 'none';
+        }
+      });
+    </script>
+
+</div>
+{% endblock %}

@@ -8,6 +8,11 @@
     <div class="expen">
         <div class="title">
             <h2>Driver Expenses</h2>
+            <a href="{% url 'addExpenses' %}">
+                <button id="addExpenseBtn" class="addBtn">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </a>
         </div>
 
         <div class="filter-controls">
@@ -37,6 +42,21 @@
         <div class="spinner"></div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="expense-table-container">
 
         <div class="table-wrapper">
@@ -54,21 +74,190 @@
                     </tr>
                 </thead>
                 <tbody id="expenseTableBody">
-                    <!-- Example row -->
+                    <!-- January -->
                     <tr>
-                        <td>10</td>
-                        <td>May</td>
-                        <td>2024</td>
-                        <td>John Doe</td>
-                        <td>ABC-123</td>
-                        <td>Fuel</td>
-                        <td>$45.00</td>
-                        <td>Filled full tank</td>
+                      <td>05</td>
+                      <td>January</td>
+                      <td>2024</td>
+                      <td>Jane Smith</td>
+                      <td>XYZ-001</td>
+                      <td>Maintenance</td>
+                      <td>$120.00</td>
+                      <td>Oil change</td>
                     </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>January</td>
+                      <td>2024</td>
+                      <td>Michael Brown</td>
+                      <td>LMN-101</td>
+                      <td>Fuel</td>
+                      <td>$60.00</td>
+                      <td>Fuel refill</td>
+                    </tr>
+                  
+                    <!-- February -->
+                    <tr>
+                      <td>08</td>
+                      <td>February</td>
+                      <td>2024</td>
+                      <td>Jane Smith</td>
+                      <td>XYZ-001</td>
+                      <td>Repair</td>
+                      <td>$200.00</td>
+                      <td>Brake pads replacement</td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>February</td>
+                      <td>2024</td>
+                      <td>Michael Brown</td>
+                      <td>LMN-101</td>
+                      <td>Fuel</td>
+                      <td>$50.00</td>
+                      <td>Refueled mid-trip</td>
+                    </tr>
+                  
+                    <!-- March -->
+                    <tr>
+                      <td>03</td>
+                      <td>March</td>
+                      <td>2024</td>
+                      <td>John Doe</td>
+                      <td>ABC-123</td>
+                      <td>Toll</td>
+                      <td>$15.00</td>
+                      <td>Highway toll</td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
+                      <td>March</td>
+                      <td>2024</td>
+                      <td>Jane Smith</td>
+                      <td>XYZ-001</td>
+                      <td>Fuel</td>
+                      <td>$55.00</td>
+                      <td>Fuel top-up</td>
+                    </tr>
+                  
+                    <!-- April -->
+                    <tr>
+                      <td>11</td>
+                      <td>April</td>
+                      <td>2024</td>
+                      <td>John Doe</td>
+                      <td>ABC-123</td>
+                      <td>Fuel</td>
+                      <td>$45.00</td>
+                      <td>Filled full tank</td>
+                    </tr>
+                    <tr>
+                      <td>25</td>
+                      <td>April</td>
+                      <td>2024</td>
+                      <td>Michael Brown</td>
+                      <td>LMN-101</td>
+                      <td>Maintenance</td>
+                      <td>$130.00</td>
+                      <td>Tire rotation</td>
+                    </tr>
+                  
+                    <!-- May -->
+                    <tr>
+                      <td>10</td>
+                      <td>May</td>
+                      <td>2024</td>
+                      <td>John Doe</td>
+                      <td>ABC-123</td>
+                      <td>Fuel</td>
+                      <td>$45.00</td>
+                      <td>Filled full tank</td>
+                    </tr>
+                    <tr>
+                      <td>22</td>
+                      <td>May</td>
+                      <td>2024</td>
+                      <td>Jane Smith</td>
+                      <td>XYZ-001</td>
+                      <td>Repair</td>
+                      <td>$180.00</td>
+                      <td>Headlight replacement</td>
+                    </tr>
+                  </tbody>
+                  
+            </table>
+        </div>
+    </div>
+    <!-- Monthly Report Query -->
+    <div class="report-section">
+        <div class="expen">
+            <h3>Run Monthly Report</h3>
+            <div class="flex">
+
+                <input type="number" id="reportYear" placeholder="Year (e.g. 2024)" min="2000" max="2100" />
+                <select id="reportMonth">
+                    <option value="" disabled selected>Select Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <button onclick="runReport()">Run Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="report-container" id="reportSummary">
+        <div class="header">
+            <h2 id="reportTitle">Company Name</h2>
+            <p><strong>Reporting Period:</strong> <span id="reportPeriod"></span></p>
+            <p><strong>Prepared on:</strong> <span id="preparedDate"></span></p>
+        </div>
+
+        <div class="section summary">
+            <h3 class="section-heading">1. Summary</h3>
+            <p><strong>Total Expenses:</strong> <span id="totalExpenses">$0.00</span></p>
+            <p><strong>Number of Records:</strong> <span id="recordCount">0</span></p>
+            <p><strong>Highest Expense Type:</strong> <span id="highestExpenseType">N/A</span></p>
+            <p><strong>Top Spending Driver:</strong> <span id="topDriver">N/A</span></p>
+        </div>
+
+        <div class="button-container">
+            <button onclick="window.print()" class="print-button">Print Report</button>
+            <button id="toggleBreakdownBtn" class="toggle-button">Show Breakdown</button>
+        </div>
+
+        <div id="breakdownTableContainer" class="table-wrapper section" style="display:none;">
+            <h4 class="section-heading">Expense Breakdown (Day-wise)</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Driver</th>
+                        <th>Vehicle</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="breakdownTableBody">
+                    <!-- Populated dynamically -->
                 </tbody>
             </table>
         </div>
     </div>
+
+
+
+
 
     <div id="overlay">
         <div id="noResultMessage">
@@ -77,87 +266,136 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 <script>
-    // Add debounce function to limit how often filterExpenses runs
-    function debounce(func, wait) {
-        let timeout;
-        return function () {
-            const context = this, args = arguments;
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                func.apply(context, args);
-            }, wait);
-        };
-    }
+    document.getElementById("toggleBreakdownBtn").addEventListener("click", function () {
+        const container = document.getElementById("breakdownTableContainer");
+        if (container.style.display === "none" || container.style.display === "") {
+            container.style.display = "block";
+            this.innerText = "Hide Breakdown";
+        } else {
+            container.style.display = "none";
+            this.innerText = "Show Breakdown";
+        }
+    });
 
-    function filterExpenses() {
-        const year = document.getElementById('filterYear').value.trim();
-        const month = document.getElementById('filterMonth').value;
-        const rows = document.querySelectorAll('#expenseTableBody tr');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const loadingPeriod = document.getElementById('loadingPeriod');
-        const expenseTable = document.querySelector('.expense-table-container');
-        const noResultMessage = document.getElementById('noResultMessage');
-        const overlay = document.getElementById('overlay');
+    function runReport() {
+        const selectedYear = document.getElementById("reportYear").value;
+        const selectedMonth = document.getElementById("reportMonth").value;
 
-        // Format display period
-        const monthName = month ? new Date(0, parseInt(month, 10) - 1).toLocaleString('default', { month: 'long' }) : '';
-        loadingPeriod.textContent = `${monthName} ${year}`.trim();
+        if (!selectedYear || !selectedMonth) {
+            alert("Please select both year and month.");
+            return;
+        }
 
-        // Hide table and show loading
-        expenseTable.style.display = 'none';
-        loadingMessage.style.display = 'block';
-        noResultMessage.style.display = 'none';
-        overlay.style.display = 'none';
+        const today = new Date();
+        document.getElementById("reportPeriod").innerText = `${selectedMonth} ${selectedYear}`;
+        document.getElementById("preparedDate").innerText = today.toDateString();
 
-        setTimeout(() => {
-            let hasMatches = false;
+        let total = 0;
+        let count = 0;
+        const typeTotals = {};
+        const driverTotals = {};
+        const breakdownRows = [];
 
-            rows.forEach(row => {
-                const rowMonthText = row.cells[1].textContent.trim();
-                const rowYear = row.cells[2].textContent.trim();
-                const rowMonth = new Date(`${rowMonthText} 1, 2000`).getMonth() + 1;
-                const formattedRowMonth = rowMonth.toString().padStart(2, '0');
+        const rows = document.querySelectorAll("#expenseTableBody tr");
 
-                const matchYear = !year || rowYear === year;
-                const matchMonth = !month || formattedRowMonth === month;
-                const shouldShow = matchYear && matchMonth;
+        rows.forEach(row => {
+            const cols = row.querySelectorAll("td");
+            const day = cols[0]?.innerText.trim();
+            const rowMonth = cols[1]?.innerText.trim();
+            const rowYear = cols[2]?.innerText.trim();
+            const driver = cols[3]?.innerText.trim();
+            const vehicle = cols[4]?.innerText.trim();
+            const expenseType = cols[5]?.innerText.trim();
+            const amountText = cols[6]?.innerText.trim();
+            const description = cols[7]?.innerText.trim();
 
-                row.style.display = shouldShow ? '' : 'none';
+            if (rowMonth === selectedMonth && rowYear === selectedYear) {
+                const amount = parseFloat(amountText.replace("$", ""));
+                if (!isNaN(amount)) {
+                    total += amount;
+                    count++;
 
-                if (shouldShow) {
-                    hasMatches = true;
+                    if (!typeTotals[expenseType]) typeTotals[expenseType] = 0;
+                    typeTotals[expenseType] += amount;
+
+                    if (!driverTotals[driver]) driverTotals[driver] = 0;
+                    driverTotals[driver] += amount;
+
+                    breakdownRows.push({ day, driver, vehicle, expenseType, amount: amountText, description });
                 }
-            });
-
-            loadingMessage.style.display = 'none';
-
-            if (hasMatches) {
-                expenseTable.style.display = 'block';
-            } else {
-                let message = 'No results found for the selected period.';
-                if (year && month) {
-                    message = `No data found for ${monthName} ${year}.`;
-                } else if (year) {
-                    message = `No data available for the year ${year}.`;
-                }
-
-                noResultMessage.querySelector('strong').textContent = message;
-                noResultMessage.style.display = 'block';
-                overlay.style.display = 'block';
             }
-        }, 500);
+        });
+
+        let topType = "N/A", maxTypeAmt = 0;
+        for (const [type, amt] of Object.entries(typeTotals)) {
+            if (amt > maxTypeAmt) {
+                maxTypeAmt = amt;
+                topType = `${type} ($${amt.toFixed(2)})`;
+            }
+        }
+
+        let topDriver = "N/A", maxDriverAmt = 0;
+        for (const [driver, amt] of Object.entries(driverTotals)) {
+            if (amt > maxDriverAmt) {
+                maxDriverAmt = amt;
+                topDriver = `${driver} ($${amt.toFixed(2)})`;
+            }
+        }
+
+        document.getElementById("totalExpenses").innerText = `$${total.toFixed(2)}`;
+        document.getElementById("recordCount").innerText = count;
+        document.getElementById("highestExpenseType").innerText = topType;
+        document.getElementById("topDriver").innerText = topDriver;
+
+        const tbody = document.getElementById("breakdownTableBody");
+        tbody.innerHTML = "";
+
+        breakdownRows.sort((a, b) => parseInt(a.day) - parseInt(b.day));
+
+        breakdownRows.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.day}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.driver}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.vehicle}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.expenseType}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.amount}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${row.description}</td>
+        `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById("reportSummary").style.display = "block";
     }
+</script>
 
-    function refreshPage() {
-        location.reload();
-    }
+<script>
+    // Simple JavaScript to show/hide the popup
+    document.getElementById('addExpenseBtn').addEventListener('click', function () {
+        document.querySelector('.expenses_pop_up').style.display = 'flex';
+    });
 
-    // Apply debounce to the input event (300ms delay after typing stops)
-    const debouncedFilter = debounce(filterExpenses, 500);
+    document.querySelector('.close-popup').addEventListener('click', function () {
+        document.querySelector('.expenses_pop_up').style.display = 'none';
+    });
 
-    // Month changes should still trigger immediately
-    document.getElementById('filterYear').addEventListener('input', debouncedFilter);
-    document.getElementById('filterMonth').addEventListener('change', filterExpenses);
+    // Close popup when clicking outside the content
+    document.querySelector('.expenses_pop_up').addEventListener('click', function (e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+        }
+    });
+
+    // Load Font Awesome for the plus icon
+    const fa = document.createElement('link');
+    fa.rel = 'stylesheet';
+    fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+    document.head.appendChild(fa);
 </script>
 {% endblock %}
