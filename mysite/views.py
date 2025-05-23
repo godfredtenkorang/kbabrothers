@@ -23,5 +23,5 @@ def waybills(request):
 def createwayBills(request):
     return render(request, 'mysite/createwayBills.html')
 
-def addExpenses(request):
-    return render(request, 'mysite/addExpenses.html')
+def report(request):
+    return render(request, 'mysite/report.html')

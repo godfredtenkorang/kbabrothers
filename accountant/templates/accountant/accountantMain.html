@@ -1,0 +1,567 @@
+{% extends 'accountant/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<main class="main">
+    <div class="dashboard">
+        <!-- Total Vehicles Card -->
+        <div class="card vehicles">
+            <div class="title">Total Vehicles</div>
+            <div class="number" id="vehicles">12</div>
+        </div>
+
+        <!-- Total Drivers Card -->
+        <div class="card drivers">
+            <div class="title">Active Drivers</div>
+            <div class="number" id="drivers">8</div>
+        </div>
+
+        <!-- Total Expenses Card -->
+        <div class="card expenses">
+            <div class="title">Total Expenses</div>
+            <div class="number" id="expenses">124</div>
+        </div>
+
+        <!-- Recent Waybills Card -->
+        <div class="card waybills">
+            <div class="title">Waybills This Month</div>
+            <div class="number" id="waybills">34</div>
+        </div>
+    </div>
+
+
+
+
+    <style>
+
+    </style>
+    </head>
+
+    <body>
+        <div class="dashboards">
+
+
+            <!-- Main Content Area -->
+            <div class="card summary-grid">
+                <h2>Sales Overview</h2>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Monthly Expense Analysis</h3>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #4361ee;"></span>
+                                <span>Fuel</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #4cc9f0;"></span>
+                                <span>Maintenance</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #f8961e;"></span>
+                                <span>Toll Fees</span>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="expenseChart" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="welcome-card">
+                    <div class="welcome-header">
+                        <h3>Welcome to KBA Fleet Manager, <span id="user-name">Admin</span>! 👋</h3>
+                    </div>
+
+
+                </div>
+
+                <div class="card">
+                    <h3>Waybill Performance</h3>
+                    <div class="metric-value">1,764 <span class="metric-change up">↑ 12.3%</span></div>
+
+                    <div style="margin-top: 20px;">
+                        <!-- Completed Trips -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Completed Trips</span>
+                            <span>78%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%; background: var(--success);"></div>
+                        </div>
+
+                        <!-- Delayed Trips -->
+                        <div style="display: flex; justify-content: space-between; margin: 15px 0 5px;">
+                            <span>Delayed Trips</span>
+                            <span>15%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 15%; background: var(--warning);"></div>
+                        </div>
+
+                        <!-- Cancelled Trips -->
+                        <div style="display: flex; justify-content: space-between; margin: 15px 0 5px;">
+                            <span>Cancelled Trips</span>
+                            <span>7%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 7%; background: var(--danger);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <h3>Fleet Utilization</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vehicle Type</th>
+                                <th>Trips Completed</th>
+                                <th>Utilization Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Heavy Trucks</td>
+                                <td>142</td>
+                                <td>88%</td>
+                            </tr>
+                            <tr>
+                                <td>Medium Trucks</td>
+                                <td>217</td>
+                                <td>76%</td>
+                            </tr>
+                            <tr>
+                                <td>Vans</td>
+                                <td>189</td>
+                                <td>82%</td>
+                            </tr>
+                            <tr>
+                                <td>Pickups</td>
+                                <td>95</td>
+                                <td>68%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 10px; text-align: right; font-size: 0.9rem; color: var(--success);">
+                        Overall Utilization ↑ 5.2% | Avg. 78.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="expense-table-container" style="display: none;">
+
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Month</th>
+                            <th>Year</th>
+                            <th>Driver</th>
+                            <th>Vehicle</th>
+                            <th>Expense Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseTableBody">
+                        <!-- January -->
+                        <tr>
+                            <td>15</td>
+                            <td>January</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$48.00</td>
+                            <td>Full tank refill</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td>January</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Maintenance</td>
+                            <td>$85.00</td>
+                            <td>Brake inspection</td>
+                        </tr>
+
+                        <!-- February -->
+                        <tr>
+                            <td>5</td>
+                            <td>February</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Fuel</td>
+                            <td>$42.50</td>
+                            <td>Mid-grade gasoline</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>February</td>
+                            <td>2024</td>
+                            <td>Sarah Williams</td>
+                            <td>GHI-789</td>
+                            <td>Toll Fees</td>
+                            <td>$12.75</td>
+                            <td>Bridge crossing</td>
+                        </tr>
+
+                        <!-- March -->
+                        <tr>
+                            <td>10</td>
+                            <td>March</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$45.00</td>
+                            <td>Filled full tank</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td>March</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Maintenance</td>
+                            <td>$120.00</td>
+                            <td>Oil change</td>
+                        </tr>
+
+                        <!-- April -->
+                        <tr>
+                            <td>3</td>
+                            <td>April</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Fuel</td>
+                            <td>$38.00</td>
+                            <td>Partial fill</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>April</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Toll Fees</td>
+                            <td>$8.50</td>
+                            <td>Highway toll</td>
+                        </tr>
+
+                        <!-- May -->
+                        <tr>
+                            <td>10</td>
+                            <td>May</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$4.00</td>
+                            <td>Filled full tank</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td>May</td>
+                            <td>2024</td>
+                            <td>Sarah Williams</td>
+                            <td>GHI-789</td>
+                            <td>Maintenance</td>
+                            <td>$65.00</td>
+                            <td>Tire rotation</td>
+                        </tr>
+
+                        <!-- June -->
+                        <tr>
+                            <td>7</td>
+                            <td>June</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Fuel</td>
+                            <td>$47.25</td>
+                            <td>Premium fuel</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>June</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Toll Fees</td>
+                            <td>$15.00</td>
+                            <td>Express lane</td>
+                        </tr>
+
+                        <!-- July -->
+                        <tr>
+                            <td>12</td>
+                            <td>July</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$43.75</td>
+                            <td>Regular unleaded</td>
+                        </tr>
+                        <tr>
+                            <td>28</td>
+                            <td>July</td>
+                            <td>2024</td>
+                            <td>Sarah Williams</td>
+                            <td>GHI-789</td>
+                            <td>Maintenance</td>
+                            <td>$95.00</td>
+                            <td>Battery check</td>
+                        </tr>
+
+                        <!-- August -->
+                        <tr>
+                            <td>4</td>
+                            <td>August</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Fuel</td>
+                            <td>$41.00</td>
+                            <td>Partial fill</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>August</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Toll Fees</td>
+                            <td>$9.25</td>
+                            <td>Tunnel fee</td>
+                        </tr>
+
+                        <!-- September -->
+                        <tr>
+                            <td>10</td>
+                            <td>September</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$45.00</td>
+                            <td>Filled full tank</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td>September</td>
+                            <td>2024</td>
+                            <td>Sarah Williams</td>
+                            <td>GHI-789</td>
+                            <td>Maintenance</td>
+                            <td>$110.00</td>
+                            <td>Wiper replacement</td>
+                        </tr>
+
+                        <!-- October -->
+                        <tr>
+                            <td>8</td>
+                            <td>October</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Fuel</td>
+                            <td>$46.50</td>
+                            <td>Full tank</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>October</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Toll Fees</td>
+                            <td>$11.00</td>
+                            <td>City bridge</td>
+                        </tr>
+
+                        <!-- November -->
+                        <tr>
+                            <td>14</td>
+                            <td>November</td>
+                            <td>2024</td>
+                            <td>John Doe</td>
+                            <td>ABC-123</td>
+                            <td>Fuel</td>
+                            <td>$44.25</td>
+                            <td>Regular fuel</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td>November</td>
+                            <td>2024</td>
+                            <td>Sarah Williams</td>
+                            <td>GHI-789</td>
+                            <td>Maintenance</td>
+                            <td>$75.00</td>
+                            <td>Light replacement</td>
+                        </tr>
+
+                        <!-- December -->
+                        <tr>
+                            <td>6</td>
+                            <td>December</td>
+                            <td>2024</td>
+                            <td>Mike Johnson</td>
+                            <td>DEF-456</td>
+                            <td>Fuel</td>
+                            <td>$39.75</td>
+                            <td>Partial fill</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>December</td>
+                            <td>2024</td>
+                            <td>Jane Smith</td>
+                            <td>XYZ-789</td>
+                            <td>Toll Fees</td>
+                            <td>$13.50</td>
+                            <td>Winter route</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Process table data
+        const tableRows = document.querySelectorAll('#expenseTableBody tr');
+        const monthlyData = {};
+
+        tableRows.forEach(row => {
+            const month = row.cells[1].textContent;
+            const type = row.cells[5].textContent;
+            const amount = parseFloat(row.cells[6].textContent.replace('$', ''));
+
+            if (!monthlyData[month]) {
+                monthlyData[month] = {
+                    Fuel: 0,
+                    Maintenance: 0,
+                    'Toll Fees': 0
+                };
+            }
+
+            monthlyData[month][type] += amount;
+        });
+
+        // Prepare chart data
+        const months = Object.keys(monthlyData);
+        const fuelData = months.map(month => monthlyData[month].Fuel);
+        const maintenanceData = months.map(month => monthlyData[month].Maintenance);
+        const tollData = months.map(month => monthlyData[month]['Toll Fees']);
+
+        // Create chart
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Fuel',
+                        data: fuelData,
+                        backgroundColor: '#4361ee',
+                        borderColor: '#4361ee',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Maintenance',
+                        data: maintenanceData,
+                        backgroundColor: '#4cc9f0',
+                        borderColor: '#4cc9f0',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Toll Fees',
+                        data: tollData,
+                        backgroundColor: '#f8961e',
+                        borderColor: '#f8961e',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Amount ($)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.dataset.label + ': $' + context.raw.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add animation to bars on hover
+        document.getElementById('expenseChart').addEventListener('mousemove', function (e) {
+            const activeElements = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false);
+            if (activeElements.length > 0) {
+                const datasetIndex = activeElements[0].datasetIndex;
+                const index = activeElements[0].index;
+                chart.data.datasets[datasetIndex].backgroundColor = chart.data.datasets[datasetIndex].backgroundColor.map((color, i) =>
+                    i === index ? color.replace(')', ', 0.8)') : color.replace(')', ', 0.5)')
+                );
+                chart.update();
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
