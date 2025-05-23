@@ -97,10 +97,13 @@ header {
 }
 
 .message {
+  display: flex;
+align-items: center;
+justify-content: center;
   gap: 40px;
   position: relative;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 12px;
 }
 
 .circle {
@@ -1618,7 +1621,7 @@ th {
   margin-top: 20px;
 }
 .print-button,
-.toggle-button {
+.toggle-button , .export-button {
   padding: 10px 15px;
   margin-right: 10px;
   border: none;

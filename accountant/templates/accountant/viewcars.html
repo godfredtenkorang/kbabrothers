@@ -1,0 +1,48 @@
+{% extends 'accountant/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main">
+
+    <div class="vehicle-table-container">
+        <h2>Vehicle List</h2>
+      
+     
+      
+        <div class="table-wrapper">
+          <table class="vehicle-table">
+            <thead>
+              <tr>
+                <th>Plate Number</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Assigned Driver</th>
+               
+              </tr>
+            </thead>
+            <tbody id="vehicleTableBody">
+              <tr>
+                <td>ABC-123</td>
+                <td>Toyota</td>
+                <td>Corolla</td>
+                <td>2018</td>
+                <td>Active</td>
+                <td class="assigned-driver">Unassigned</td>
+               
+              </tr>
+              <!-- More rows as needed -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+  
+</div>
+
+
+
+
+{% endblock %}

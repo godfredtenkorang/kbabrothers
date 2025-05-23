@@ -23,14 +23,12 @@
     
     
         <div class="message">
-            <h1>Admin</h1>
-            
-            <button id="fullscreen-btn" class="fullscreen-btn">
-                <span class="fullscreen-icon">⛶</span> Fullscreen
-              </button>
-        </div>
+            <h1>Accountant</h1>
       
-       
+        <button id="fullscreen-btn" class="fullscreen-btn">
+            <span class="fullscreen-icon">⛶</span> Fullscreen
+          </button>
+        </div>
     </header>
     
     <div class="main-container">
@@ -39,29 +37,29 @@
                 <div class="nav-upper-options">
     
                     <!-- home button -->
-                    <a href="{% url 'index' %}">
+                    <a href="{% url 'accountantMain' %}">
     
                         <div class="nav-option option1 button active">
                             <h3><i class="fa-solid fa-house"></i> Dashboard</h3>
                         </div>
                     </a>
                     <!-- acivities button -->
-                    <a href="{% url 'addvehicles' %}">
+                    <a href="{% url 'viewcars' %}">
     
                         <div class="nav-option option1 button">
-                            <h3>Add vehicles<i class="fa-solid fa-chart-simple"></i> </h3>
+                            <h3>view Vehicle<i class="fa-solid fa-chart-simple"></i> </h3>
                         </div>
                     </a>
-                    <a href="{% url 'view_Vehicles' %}">
+                    <a href="{% url 'accountantWaybills' %}">
     
                         <div class="nav-option option1 button">
-                            <h3>View vehicles<i class="fa-solid fa-chart-simple"></i> </h3>
+                            <h3>Waybills<i class="fa-solid fa-chart-simple"></i> </h3>
                         </div>
                     </a>
     
     
                     <!-- registration button -->
-                    <a href="{% url 'drivers' %}">
+                    <a href="{% url 'acc_drivers' %}">
     
                         <div class="nav-option option1 button ">
                             <h3>Drivers <i class="fa-solid fa-cash-register"></i> </h3>
@@ -70,19 +68,15 @@
     
     
                     <!-- registration button -->
-                    <a href="{% url 'expenses' %}">
+                    <a href="{% url 'acc_expenses' %}">
                         <div class="nav-option option1 button">
                             <h3> Expenses<i class="fa-solid fa-money-bill"></i> </h3>
                         </div>
                     </a>
     
                     <!-- team button -->
-                    <a href="{% url 'waybills' %}">
-                        <div class="nav-option option1 button">
-                            <h3>Waybills<i class="fa-solid fa-people-group"></i> </h3>
-                        </div>
-                    </a>
-                    <a href="{% url 'report' %}">
+                    
+                    <a href="">
                         <div class="nav-option option1 button">
                             <h3>Report<i class="fa-solid fa-people-group"></i> </h3>
                         </div>

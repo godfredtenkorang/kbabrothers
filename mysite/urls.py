@@ -10,5 +10,5 @@ urlpatterns = [
     path('expenses/', views.expenses, name='expenses'),
     path('waybills/', views.waybills, name='waybills'),
     path('createwayBills/', views.createwayBills, name='createwayBills'),
-    path('addExpenses/', views.addExpenses, name='addExpenses'),
+    path('report/', views.report, name='report'),
 ]
